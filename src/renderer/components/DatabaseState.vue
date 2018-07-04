@@ -1,40 +1,134 @@
 <template>
-<div>
-  <svg width="90px" height="44px" viewBox="0 0 45 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <path d="M23.3503531,2.91968887 C22.4806738,2.97766749 21.4778584,3.1301298 20.6869154,3.35918114 C20.5387479,3.40212827 19.9253197,3.62760069 19.7692785,3.69917923 C17.0156518,4.97470891 15.0973468,7.75911433 15.0973468,10.9894541 C15.0973468,15.4201661 18.7020424,19.0291563 23.1356175,19.0291563 C27.5298244,19.0291563 31.1101832,15.4817236 31.1717408,11.1011166 L34.0756824,11.1011166 C34.0141248,17.0822199 29.1317522,21.929519 23.1356175,21.929519 C17.1036935,21.929519 12.194121,17.0228097 12.194121,10.9894541 C12.194121,6.83002481 14.5333079,3.21244512 17.9583413,1.36428708 C18.5767799,1.03717312 19.4643539,0.700038175 19.7656996,0.607701851 C20.7420309,0.317092957 21.9402558,0.123830884 23.0067761,0.0429471273 C23.3689635,0.01574728 24.6337564,0.00143157091 25.002386,5.68434189e-14 L45,5.68434189e-14 L45,2.89248902 L25.0360279,2.89248902 C24.7704715,2.89248902 23.6101832,2.90251002 23.3503531,2.91968887 Z M25.0360279,7.46134759 C24.8248712,7.46134759 23.7204142,7.46850544 23.5164153,7.48568429 C23.170691,7.51503149 22.6696412,7.56656805 22.3475377,7.64029395 C21.9839187,7.73764077 21.642489,7.86648215 21.4885952,7.95094484 C20.4099065,8.53430998 19.6747948,9.675272 19.6747948,10.9894541 C19.6747948,12.901317 21.2230387,14.4517083 23.1356175,14.4517083 C25.0081122,14.4517083 26.5305879,12.9621588 26.5914297,11.1011166 L29.3815614,11.1011166 C29.322867,14.5010975 26.5513457,17.2411243 23.1356175,17.2411243 C19.6819527,17.2411243 16.8825157,14.4424031 16.8825157,10.9894541 C16.8825157,8.55435198 18.2782974,6.45137431 20.3111281,5.42135904 C20.6239263,5.23811796 21.212302,5.04628746 21.3797958,5.00262455 C21.9538557,4.85159382 22.7247566,4.74852071 23.3503531,4.70271044 C23.5815518,4.68338423 24.7139244,4.67479481 24.9529968,4.67336324 L24.9529968,4.66906852 L44.9992842,4.66906852 L44.9992842,7.46134759 L25.0360279,7.46134759 Z M10.4046574,0.0107367818 L7.48138958,0.0107367818 L7.48138958,19.0227143 L3.20958198,19.0227143 L3.20958198,21.9466978 L10.4046574,21.9466978 L10.4046574,0.0107367818 Z M0,17.5617961 L0,14.7501909 L3.20958198,14.7501909 L3.20958198,0.0107367818 L6.01832411,0.0107367818 L6.01832411,17.5617961 L0,17.5617961 Z" id="path-1"></path>
-        <filter x="-0.3%" y="-2.1%" width="100.7%" height="102.7%" filterUnits="objectBoundingBox" id="filter-2">
-            <feOffset dx="0" dy="-0.3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.46521173 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
-        </filter>
-        <filter x="-0.6%" y="-2.5%" width="101.1%" height="103.6%" filterUnits="objectBoundingBox" id="filter-3">
-            <feOffset dx="0" dy="-0.5" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
-            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
-            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.564622962 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
-        </filter>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="path22" fill-rule="nonzero" transform="translate(22.500000, 10.973349) scale(-1, 1) rotate(-180.000000) translate(-22.500000, -10.973349) ">
-            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-            <use fill="#686767" fill-rule="evenodd" xlink:href="#path-1"></use>
-            <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-1"></use>
-        </g>
-    </g>
-  </svg>
-  <div class="label">
-    DATABASE
+  <div class="database-state" :class="view.styleClass">
+    <i class="m-1c"></i>
+    <div class="label">DATABASE</div>
   </div>
-</div>
 </template>
+
 <script>
+import { Observable, Subscription } from 'rxjs'
+import { tap, mapTo, switchMap, timeout, catchError, distinctUntilChanged, map, shareReplay } from 'rxjs/operators'
+import sql from 'mssql'
+
+const config = {
+  user: 'ovs',
+  password: 'C0nvent-12',
+  server: '192.168.100.5',
+  port: 1056,
+  database: 'TRG-SKLAD'
+}
+
 export default {
-  name: 'DatabaseState'
+  name: 'DatabaseState',
+  stateMachine: {
+    init: 'INIT',
+    transitions: {
+      'INIT': {
+        'connect': 'CONNECTED',
+        'disconnect': 'DISCONNECTED'
+      },
+      'CONNECTED': {
+        'disconnect': 'DISCONNECTED'
+      },
+      'DISCONNECTED': {
+        'connect': 'CONNECTED'
+      }
+    }
+  },
+  states: {
+    INIT: {
+      styleClass: ''
+    },
+    CONNECTED: {
+      styleClass: 'connected'
+    },
+    DISCONNECTED: {
+      styleClass: 'disconnected'
+    }
+  },
+  mounted () {
+    const vm = this
+    this.subs.add(Observable.interval(3000).pipe(
+      switchMap(v => {
+        return Observable.fromPromise(vm.pingemu()).pipe(
+          mapTo('connect'),
+          timeout(2000),
+          catchError(_ => Observable.of('disconnect'))
+        )
+      }, (...args) => args[1]),
+      distinctUntilChanged(),
+      tap(v => console.log(v)),
+      map(event => ({event}))
+    ).subscribe(vm.$fsm.event$))
+  },
+  beforeDestroy () {
+    if (this.subs) {
+      this.subs.unsubscribe()
+    }
+  },
+  subscriptions () {
+    this.subs = new Subscription()
+    this.stateChange$ = this.$fsm.state$.pipe(distinctUntilChanged(), shareReplay())
+    this.subs.add(this.stateChange$.subscribe(state => this.$emit('state', state)))
+    return {
+      // view: this.$fsm.state$.pipe(distinctUntilChanged(), map(state => this.$options.states[state]))
+      view: this.stateChange$.pipe(map(state => this.$options.states[state]))
+    }
+  },
+  methods: {
+    pingemu () {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve()
+        }, 100)
+      })
+    },
+    async ping () {
+      let t1, t2
+      t1 = Date.now()
+      try {
+        const pool = await sql.connect(config)
+        await pool.request().query(`SELECT 1`)
+      } catch (err) {
+        console.log(err)
+      } finally {
+        sql.close()
+      }
+      t2 = Date.now()
+      this.result += `TIME ${t2 - t1} ms\n`
+      setTimeout(async () => this.test(), 1000)
+    }
+  }
 }
 </script>
-<style scoped>
-.label {
-  font-size: 21px;
-  margin-top: 5px;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .4);
-}
+
+<style lang="stylus">
+
+.database-state
+  height: 72px
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-direction: column
+  .label
+    font-size: 21px
+    margin-top: 5px
+    color: #555
+    text-shadow: 0 1px 0 rgba(white, .4)
+  .m-1c:before
+    font-size: 36px
+    color: #555
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .4)
+
+.connected
+  .m-1c:before
+    color: #015905
+  .label
+    color: #003F02
+
+.disconnected 
+  .m-1c:before
+    color: #814848
+ .label
+    color: #5C3333
 </style>

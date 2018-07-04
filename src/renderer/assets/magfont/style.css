@@ -1,0 +1,40 @@
+@font-face {
+  font-family: 'magfont';
+  src:
+    url('fonts/magfont.ttf?t8uaz7') format('truetype'),
+    url('fonts/magfont.woff?t8uaz7') format('woff'),
+    url('fonts/magfont.svg?t8uaz7#magfont') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'magfont' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.m-long-arrow-right:before {
+  content: "\e902";
+}
+.m-datafile:before {
+  content: "\e904";
+  color: #000;
+}
+.m-magtool:before {
+  content: "\e900";
+  color: #000;
+}
+.m-1c:before {
+  content: "\e901";
+  color: #000;
+}

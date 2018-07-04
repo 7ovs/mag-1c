@@ -2,11 +2,9 @@
   <div id="app">
     <v-app>
       <v-content>
-        <v-container fluid fill-height>
-          <v-slide-y-transition mode="out-in">
-            <router-view></router-view>
-          </v-slide-y-transition>
-        </v-container>
+        <v-slide-y-transition mode="out-in">
+          <router-view></router-view>
+        </v-slide-y-transition>
       </v-content>
     </v-app>
   </div>
@@ -35,7 +33,7 @@
   @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons');
   /* Global CSS */
   #app {
-    background-image: url("/static/bg/bg-1.png");
+    background-image: url("/static/bg/005-wood-grain.png");
     background-repeat: repeat;
     font: 200 16px 'Roboto-Condensed';
   }
